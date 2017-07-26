@@ -29,7 +29,7 @@ class LoginVC: UIViewController {
         
         facebookLogin.logIn(withReadPermissions: ["email"], from: self) { (result, error) in
             if error != nil {
-                print("Unable to authenticate with Facebook! - \(String(describing: error))")
+                print("Unable to authenticate with Facebook! - \(error!)")
             } else if result?.isCancelled == true {
                 print("User cancelled Facebook authentication")
             } else {
