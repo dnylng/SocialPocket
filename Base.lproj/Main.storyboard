@@ -22,10 +22,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WDk-fC-JHo" userLabel="Header" customClass="StyleView" customModule="SocialPocket" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="doK-3A-9um">
-                                        <rect key="frame" x="100" y="17.5" width="120" height="85"/>
+                                        <rect key="frame" x="100" y="20" width="120" height="85"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="85" id="kNo-Fk-Jal"/>
                                             <constraint firstAttribute="width" constant="120" id="uP1-eN-1eZ"/>
@@ -34,8 +34,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.69019607839999997" green="0.74509803919999995" blue="0.7725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="2XS-ix-bDy"/>
-                                    <constraint firstItem="doK-3A-9um" firstAttribute="centerY" secondItem="WDk-fC-JHo" secondAttribute="centerY" id="VZO-lS-iFs"/>
+                                    <constraint firstAttribute="height" constant="70" id="2XS-ix-bDy"/>
+                                    <constraint firstItem="doK-3A-9um" firstAttribute="top" secondItem="WDk-fC-JHo" secondAttribute="top" constant="20" id="nou-Cw-2QO"/>
                                     <constraint firstItem="doK-3A-9um" firstAttribute="centerX" secondItem="WDk-fC-JHo" secondAttribute="centerX" id="ycC-GI-40f"/>
                                 </constraints>
                             </view>
@@ -62,7 +62,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wLK-wT-5y6">
-                                <rect key="frame" x="20" y="140" width="280" height="333"/>
+                                <rect key="frame" x="20" y="120" width="280" height="353"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a sign-in method" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KZ9-pW-sRF">
                                         <rect key="frame" x="0.0" y="0.0" width="280" height="20"/>
@@ -74,22 +74,25 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="TKM-6q-X91">
-                                        <rect key="frame" x="0.0" y="40" width="280" height="123"/>
+                                        <rect key="frame" x="0.0" y="40" width="280" height="143"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="esj-ns-bnX" userLabel="Facebook" customClass="RoundButton" customModule="SocialPocket" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="130" height="123"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="130" height="143"/>
                                                 <color key="backgroundColor" red="0.16200980540000001" green="0.65832835440000004" blue="0.54471522569999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="facebook"/>
+                                                <connections>
+                                                    <action selector="facebookBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8cm-Ve-nNe"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Sm-bH-Kau" userLabel="Google" customClass="RoundButton" customModule="SocialPocket" customModuleProvider="target">
-                                                <rect key="frame" x="150" y="0.0" width="130" height="123"/>
+                                                <rect key="frame" x="150" y="0.0" width="130" height="143"/>
                                                 <color key="backgroundColor" red="0.16200980540000001" green="0.65832835440000004" blue="0.54471522569999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="google"/>
                                             </button>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="cUB-hE-EnF">
-                                        <rect key="frame" x="0.0" y="183" width="280" height="150"/>
+                                        <rect key="frame" x="0.0" y="203" width="280" height="150"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wyP-Nq-UyK" customClass="StyleTextField" customModule="SocialPocket" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="280" height="43.5"/>
@@ -129,7 +132,7 @@
                             <constraint firstAttribute="trailing" secondItem="RHA-t2-Ccm" secondAttribute="trailing" id="Yms-FR-yyq"/>
                             <constraint firstItem="wLK-wT-5y6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="beX-tE-Wm5"/>
                             <constraint firstItem="RHA-t2-Ccm" firstAttribute="top" secondItem="wLK-wT-5y6" secondAttribute="bottom" constant="20" id="mO3-RZ-Ts9"/>
-                            <constraint firstItem="wLK-wT-5y6" firstAttribute="top" secondItem="WDk-fC-JHo" secondAttribute="bottom" constant="20" id="r7Y-SM-9Ne"/>
+                            <constraint firstItem="wLK-wT-5y6" firstAttribute="top" secondItem="WDk-fC-JHo" secondAttribute="bottom" constant="50" id="r7Y-SM-9Ne"/>
                             <constraint firstAttribute="trailing" secondItem="WDk-fC-JHo" secondAttribute="trailing" id="uN4-VP-LKr"/>
                             <constraint firstItem="WDk-fC-JHo" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="wpN-6V-Ymr"/>
                         </constraints>
