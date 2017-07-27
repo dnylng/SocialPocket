@@ -1,14 +1,14 @@
 //
-//  StyleView.swift
+//  CircleView.swift
 //  SocialPocket
 //
-//  Created by Danny Luong on 7/26/17.
+//  Created by Danny Luong on 7/27/17.
 //  Copyright © 2017 dnylng. All rights reserved.
 //
 
 import UIKit
 
-class StyleView: UIView {
+class RoundView: UIImageView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -18,7 +18,12 @@ class StyleView: UIView {
         layer.shadowOpacity = 0.8
         layer.shadowRadius = 5.0
         layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
-        layer.cornerRadius = 2.0
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        layer.cornerRadius = self.frame.width / 2
     }
 
 }
