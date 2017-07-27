@@ -19,8 +19,13 @@ class LoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        // Checking if there's already a keychain with the keyuid
+        if let _ = KeychainWrapper.standard.string(forKey: KEY_UID) {
+            performSegue(withIdentifier: "toFeed", sender: nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -84,9 +89,10 @@ class LoginVC: UIViewController {
         }
     }
     
-    // Save account to the keychain
+    // Save account to the keychain and segue
     func completeLogin(id: String) {
         let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
+        performSegue(withIdentifier: "toFeed", sender: nil)
         print("Data saved to keychain! - \(keychainResult)")
     }
     
