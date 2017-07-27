@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import FBSDKCoreKit
 import FBSDKLoginKit
+import SwiftKeychainWrapper
 
 class LoginVC: UIViewController {
 
@@ -18,7 +19,8 @@ class LoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,6 +52,9 @@ class LoginVC: UIViewController {
                 print("Unable to authenticate with Firebase")
             } else {
                 print("Successfully authenticated with Firebase")
+                if let user = user {
+                    self.completeLogin(id: user.uid)
+                }
             }
         }
     }
@@ -61,17 +66,28 @@ class LoginVC: UIViewController {
             Auth.auth().signIn(withEmail: email, password: pwd, completion: { (user, error) in
                 if error == nil {
                     print("Email user authenticated with Firebase")
+                    if let user = user {
+                        self.completeLogin(id: user.uid)
+                    }
                 } else {
                     Auth.auth().createUser(withEmail: email, password: pwd, completion: { (user, error) in
                         if error != nil {
                             print("Unable to authenticate with Firebase using email")
                         } else {
                             print("Successfully authenticated with Firebase using email")
-                        }
+                            if let user = user {
+                                self.completeLogin(id: user.uid)
+                            }                        }
                     })
                 }
             })
         }
+    }
+    
+    // Save account to the keychain
+    func completeLogin(id: String) {
+        let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
+        print("Data saved to keychain! - \(keychainResult)")
     }
     
 }
