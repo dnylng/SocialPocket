@@ -210,7 +210,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="7lb-yI-0zF">
                                         <rect key="frame" x="8" y="8" width="272" height="49"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="514-Hy-udb" customClass="RoundView" customModule="SocialPocket" customModuleProvider="target">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="514-Hy-udb">
                                                 <rect key="frame" x="0.0" y="0.0" width="49" height="49"/>
                                                 <color key="backgroundColor" red="0.16200980540000001" green="0.65832835440000004" blue="0.54471522569999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -218,7 +218,7 @@
                                                     <constraint firstAttribute="width" constant="49" id="hnZ-Gd-3Qu"/>
                                                 </constraints>
                                             </imageView>
-                                            <textField opaque="NO" clipsSubviews="YES" alpha="0.69999999999999996" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add a caption..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KUY-ni-8vt" customClass="StyleTextField" customModule="SocialPocket" customModuleProvider="target">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add a caption..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KUY-ni-8vt" customClass="StyleTextField" customModule="SocialPocket" customModuleProvider="target">
                                                 <rect key="frame" x="59" y="0.0" width="154" height="49"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -264,12 +264,12 @@
                                                     <rect key="frame" x="16" y="8" width="288" height="245.5"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FmV-Yn-iw9">
-                                                            <rect key="frame" x="8" y="8" width="272" height="207.5"/>
+                                                            <rect key="frame" x="8" y="8" width="272" height="199.5"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NRK-tL-NnO">
                                                                     <rect key="frame" x="0.0" y="0.0" width="272" height="60"/>
                                                                     <subviews>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile" translatesAutoresizingMaskIntoConstraints="NO" id="88h-i3-Xlv">
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile" translatesAutoresizingMaskIntoConstraints="NO" id="88h-i3-Xlv" customClass="RoundView" customModule="SocialPocket" customModuleProvider="target">
                                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="60" id="3uk-aN-XFv"/>
@@ -295,8 +295,11 @@
                                                                     <rect key="frame" x="0.0" y="68" width="272" height="73.5"/>
                                                                 </imageView>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="M0Q-vn-eHd">
-                                                                    <rect key="frame" x="0.0" y="149.5" width="272" height="58"/>
+                                                                    <rect key="frame" x="0.0" y="149.5" width="272" height="50"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="wds-5s-CU0"/>
+                                                                    </constraints>
                                                                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.87" colorSpace="calibratedRGB"/>
                                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
@@ -305,7 +308,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Xqv-VY-YYK">
-                                                            <rect key="frame" x="201" y="223.5" width="79" height="22"/>
+                                                            <rect key="frame" x="201" y="215.5" width="79" height="22"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i3Z-0N-cHh">
                                                                     <rect key="frame" x="0.0" y="0.0" width="36.5" height="22"/>
@@ -324,8 +327,8 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="Xqv-VY-YYK" secondAttribute="bottom" id="KKU-WZ-cZL"/>
                                                         <constraint firstAttribute="trailing" secondItem="Xqv-VY-YYK" secondAttribute="trailing" constant="8" id="OOf-59-vU0"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Xqv-VY-YYK" secondAttribute="bottom" constant="8" id="RVA-oT-F42"/>
                                                         <constraint firstAttribute="trailing" secondItem="FmV-Yn-iw9" secondAttribute="trailing" constant="8" id="ka9-hf-NM3"/>
                                                         <constraint firstItem="FmV-Yn-iw9" firstAttribute="leading" secondItem="MIM-ka-UTQ" secondAttribute="leading" constant="8" id="u1d-vN-9xq"/>
                                                         <constraint firstItem="Xqv-VY-YYK" firstAttribute="top" secondItem="FmV-Yn-iw9" secondAttribute="bottom" constant="8" id="yuV-fG-g63"/>
