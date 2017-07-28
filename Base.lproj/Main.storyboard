@@ -249,11 +249,11 @@
                                     <constraint firstAttribute="trailingMargin" secondItem="7lb-yI-0zF" secondAttribute="trailing" id="jV6-vs-3GN"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="262" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IGR-IM-E0t">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="262" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="IGR-IM-E0t">
                                 <rect key="frame" x="0.0" y="199" width="320" height="369"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="262" id="9Yb-7P-K7f">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostCell" rowHeight="262" id="9Yb-7P-K7f" customClass="PostCell" customModule="SocialPocket" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="262"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Yb-7P-K7f" id="0va-Ns-Ubd">
@@ -305,7 +305,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Xqv-VY-YYK">
-                                                            <rect key="frame" x="209" y="223.5" width="79" height="22"/>
+                                                            <rect key="frame" x="201" y="223.5" width="79" height="22"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Likes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i3Z-0N-cHh">
                                                                     <rect key="frame" x="0.0" y="0.0" width="36.5" height="22"/>
@@ -325,7 +325,7 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="Xqv-VY-YYK" secondAttribute="bottom" id="KKU-WZ-cZL"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Xqv-VY-YYK" secondAttribute="trailing" id="edq-JH-pLS"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Xqv-VY-YYK" secondAttribute="trailing" constant="8" id="OOf-59-vU0"/>
                                                         <constraint firstAttribute="trailing" secondItem="FmV-Yn-iw9" secondAttribute="trailing" constant="8" id="ka9-hf-NM3"/>
                                                         <constraint firstItem="FmV-Yn-iw9" firstAttribute="leading" secondItem="MIM-ka-UTQ" secondAttribute="leading" constant="8" id="u1d-vN-9xq"/>
                                                         <constraint firstItem="Xqv-VY-YYK" firstAttribute="top" secondItem="FmV-Yn-iw9" secondAttribute="bottom" constant="8" id="yuV-fG-g63"/>
@@ -340,6 +340,13 @@
                                                 <constraint firstItem="MIM-ka-UTQ" firstAttribute="leading" secondItem="0va-Ns-Ubd" secondAttribute="leading" constant="16" id="gHU-Mq-Scf"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="caption" destination="M0Q-vn-eHd" id="BPJ-Bm-ZCd"/>
+                                            <outlet property="likesLbl" destination="h8Z-8u-0XP" id="aNz-0v-1LF"/>
+                                            <outlet property="postImg" destination="DBi-ay-t8r" id="9EZ-Si-Jbq"/>
+                                            <outlet property="profileImg" destination="88h-i3-Xlv" id="v7g-hf-ODT"/>
+                                            <outlet property="usernameLbl" destination="0ZT-iB-HOl" id="Ndt-rX-HJg"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -358,6 +365,9 @@
                             <constraint firstItem="V94-Pi-o5y" firstAttribute="top" secondItem="IGR-IM-E0t" secondAttribute="bottom" id="y7z-Ik-5aG"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="IGR-IM-E0t" id="aCT-5t-fJf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pAo-0v-OUz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
