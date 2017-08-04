@@ -45,20 +45,21 @@ class LoginVC: UIViewController {
             } else {
                 print("Successfully authenticated with Facebook!")
                 let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-                self.firebaseAuth(credential)
+                self.firebaseAuthWithFB(credential)
             }
         }
     }
     
     // Firebase authentication handling
-    func firebaseAuth(_ credential: AuthCredential) {
+    func firebaseAuthWithFB(_ credential: AuthCredential) {
         Auth.auth().signIn(with: credential) { (user, error) in
             if error != nil {
                 print("Unable to authenticate with Firebase")
             } else {
                 print("Successfully authenticated with Firebase")
                 if let user = user {
-                    self.completeLogin(id: user.uid)
+                    let userData = ["provider": credential.provider]
+                    self.completeLogin(uid: user.uid, userData: userData)
                 }
             }
         }
@@ -72,7 +73,8 @@ class LoginVC: UIViewController {
                 if error == nil {
                     print("Email user authenticated with Firebase")
                     if let user = user {
-                        self.completeLogin(id: user.uid)
+                        let userData = ["provider": user.providerID]
+                        self.completeLogin(uid: user.uid, userData: userData)
                     }
                 } else {
                     Auth.auth().createUser(withEmail: email, password: pwd, completion: { (user, error) in
@@ -81,8 +83,10 @@ class LoginVC: UIViewController {
                         } else {
                             print("Successfully authenticated with Firebase using email")
                             if let user = user {
-                                self.completeLogin(id: user.uid)
-                            }                        }
+                                let userData = ["provider": user.providerID]
+                                self.completeLogin(uid: user.uid, userData: userData)
+                            }
+                        }
                     })
                 }
             })
@@ -90,11 +94,13 @@ class LoginVC: UIViewController {
     }
     
     // Save account to the keychain and segue
-    func completeLogin(id: String) {
-        let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
+    func completeLogin(uid: String, userData: Dictionary<String, String>) {
+        DataService.ds.createFirebaseDBUser(uid: uid, userData: userData)
+        
+        let keychainResult = KeychainWrapper.standard.set(uid, forKey: KEY_UID)
         performSegue(withIdentifier: "toFeed", sender: nil)
         print("Data saved to keychain! - \(keychainResult)")
     }
-    
+        
 }
 
