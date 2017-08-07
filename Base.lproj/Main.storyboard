@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -210,13 +210,17 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="7lb-yI-0zF">
                                         <rect key="frame" x="8" y="8" width="272" height="49"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="514-Hy-udb">
+                                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="Oga-tp-hdv" customClass="RoundView" customModule="SocialPocket" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="49" height="49"/>
                                                 <color key="backgroundColor" red="0.16200980540000001" green="0.65832835440000004" blue="0.54471522569999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <gestureRecognizers/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="49" id="Ohs-Vc-N7B"/>
-                                                    <constraint firstAttribute="width" constant="49" id="hnZ-Gd-3Qu"/>
+                                                    <constraint firstAttribute="height" constant="49" id="7Vu-06-QiS"/>
+                                                    <constraint firstAttribute="width" constant="49" id="Is3-OI-4JR"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="dhm-ZZ-uGw" appends="YES" id="f2c-E8-TpQ"/>
+                                                </connections>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add a caption..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KUY-ni-8vt" customClass="StyleTextField" customModule="SocialPocket" customModuleProvider="target">
                                                 <rect key="frame" x="59" y="0.0" width="154" height="49"/>
@@ -369,10 +373,16 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addImgBtn" destination="Oga-tp-hdv" id="VNw-ID-Dmb"/>
                         <outlet property="tableView" destination="IGR-IM-E0t" id="aCT-5t-fJf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pAo-0v-OUz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="dhm-ZZ-uGw" userLabel="addImg">
+                    <connections>
+                        <action selector="addImgBtnPressed:" destination="aZB-n2-dZ7" id="6KO-dd-rSL"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="735" y="35.91549295774648"/>
         </scene>

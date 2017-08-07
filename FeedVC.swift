@@ -10,17 +10,23 @@ import UIKit
 import Firebase
 import SwiftKeychainWrapper
 
-class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var addImgBtn: RoundView!
     
     var posts = [Post]()
+    var imagePicker: UIImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.delegate = self
         tableView.dataSource = self
+        
+        imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        imagePicker.delegate = self
         
         // On the look out for new posts
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
@@ -50,6 +56,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return posts.count
     }
     
+    // Configure cell information in the tableview
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let post = posts[indexPath.row]
         
@@ -59,6 +66,24 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } else {
             return PostCell()
         }
+    }
+    
+    // Once we've selected an image, get rid of the image picker
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+            addImgBtn.image = image
+            addImgBtn.backgroundColor = UIColor.white
+        } else {
+            print("TEST: A valid image wasn't selected for the imagePicker")
+        }
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func addImgBtnPressed(_ sender: Any) {
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @IBAction func addPostBtnPressed(_ sender: Any) {
     }
     
     @IBAction func signoutBtnPressed(_ sender: Any) {
