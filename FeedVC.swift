@@ -14,6 +14,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
+    var posts = [Post]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,12 +29,15 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
                 for snap in snapshot {
                     print("SNAP: \(snap)")
                     
+                    // If a post exists, create a post model and add that to an array
                     if let postData = snap.value as? Dictionary<String, AnyObject> {
                         let postID = snap.key
                         let post = Post(postID: postID, postData: postData)
+                        self.posts.append(post)
                     }
                 }
             }
+            self.tableView.reloadData()
         })
     }
     
@@ -40,11 +45,15 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return 1
     }
     
+    // Number of posts will be the number of rows shown
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let post = posts[indexPath.row]
+        print("TEST: \(post.caption)")
+        
         return tableView.dequeueReusableCell(withIdentifier: "PostCell") as! PostCell
     }
     
