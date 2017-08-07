@@ -21,9 +21,19 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.dataSource = self
         
         // On the look out for new posts
-        DataService.ds.REF_POSTS.observe(.value) { (snapshot) in
-            print(snapshot.value!)
-        }
+        DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
+            // Prints out each posts' info
+            if let snapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                for snap in snapshot {
+                    print("SNAP: \(snap)")
+                    
+                    if let postData = snap.value as? Dictionary<String, AnyObject> {
+                        let postID = snap.key
+                        let post = Post(postID: postID, postData: postData)
+                    }
+                }
+            }
+        })
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
