@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import GoogleSignIn
 import SwiftKeychainWrapper
 
 class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
@@ -159,6 +160,9 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         if self.presentingViewController != nil {
             self.dismiss(animated: true, completion: nil)
         }
+        
+        GIDSignIn.sharedInstance().signOut()
+        
         let _ = KeychainWrapper.standard.removeObject(forKey: KEY_UID)
         do {
             try Auth.auth().signOut()

@@ -10,16 +10,14 @@ import UIKit
 import FirebaseAuth
 import FBSDKCoreKit
 import FBSDKLoginKit
+import GoogleSignIn
 import SwiftKeychainWrapper
 
-class LoginVC: UIViewController, UITextFieldDelegate {
+class LoginVC: UIViewController, UITextFieldDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
 
     @IBOutlet weak var emailField: StyleTextField!
     @IBOutlet weak var pwdField: StyleTextField!
     @IBOutlet weak var botConstraint: NSLayoutConstraint!
-    
-    var duration: TimeInterval!
-    var animationCurve: UIViewAnimationOptions!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +25,12 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         // Set up for moving text fields up
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        emailField.delegate = self
+        pwdField.delegate = self
+        
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -34,25 +38,16 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         if let _ = KeychainWrapper.standard.string(forKey: KEY_UID) {
             performSegue(withIdentifier: "toFeed", sender: nil)
         }
-        
-        emailField.delegate = self
-        pwdField.delegate = self
     }
     
     func keyboardWillShow(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
             
-            // Animation calculations
-            duration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
-            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
-            animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            
             self.botConstraint.constant = keyboardFrame.height
-            UIView.animate(withDuration: duration,
+            UIView.animate(withDuration: 0.25,
                            delay: TimeInterval(0),
-                           options: animationCurve,
+                           options: UIViewAnimationOptions(rawValue: 7),
                            animations: { self.view.layoutIfNeeded() },
                            completion: nil)
         }
@@ -73,9 +68,9 @@ class LoginVC: UIViewController, UITextFieldDelegate {
     // When keyboard is hidden, make sure bot constraint is 0.0
     func keyboardWillHide() {
         self.botConstraint.constant = 0.0
-        UIView.animate(withDuration: duration,
+        UIView.animate(withDuration: 0.25,
                        delay: TimeInterval(0),
-                       options: animationCurve,
+                       options: UIViewAnimationOptions(rawValue: 7),
                        animations: { self.view.layoutIfNeeded() },
                        completion: nil)
     }
@@ -97,6 +92,10 @@ class LoginVC: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBAction func googleBtnPressed(_ sender: Any) {
+        GIDSignIn.sharedInstance().signIn()
+    }
+    
     // Firebase authentication handling
     func firebaseAuthWithFB(_ credential: AuthCredential) {
         Auth.auth().signIn(with: credential) { (user, error) in
@@ -107,6 +106,32 @@ class LoginVC: UIViewController, UITextFieldDelegate {
                 if let user = user {
                     let userData = ["provider": credential.provider]
                     self.completeLogin(uid: user.uid, userData: userData)
+                }
+            }
+        }
+    }
+    
+    // Firebase auth with google
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if let error = error {
+            print("TEST: Failed to authenticate with Google", error)
+            return
+        }
+        print("TEST: Successfully authenticated with Google!", user)
+        
+        // Create user id/access token to sign into Firebase with
+        guard let idToken = user.authentication.idToken else { return }
+        guard let accessToken = user.authentication.accessToken else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+        Auth.auth().signIn(with: credential) { (user, error) in
+            if error != nil {
+                print("Unable to authenticate to Firebase with Google")
+            } else {
+                print("Successfully authenticated to Firebase with Google")
+                if let user = user {
+                    let userData = ["provider": credential.provider]
+                    self.completeLogin(uid: user.uid, userData: userData)
+                    print("TEST: Google UID \(user.uid)")
                 }
             }
         }
