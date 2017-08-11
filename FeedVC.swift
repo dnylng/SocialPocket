@@ -10,20 +10,23 @@ import UIKit
 import Firebase
 import SwiftKeychainWrapper
 
-class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addImgBtn: RoundView!
+    @IBOutlet weak var captionField: StyleTextField!
     
     var posts = [Post]()
     var imagePicker: UIImagePickerController!
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
+    var imageSelected = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.delegate = self
         tableView.dataSource = self
+        captionField.delegate = self
         
         imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = true
@@ -31,6 +34,9 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         // On the look out for new posts
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
+            // Clean the array of posts to avoid duplicates
+            self.posts = []
+            
             // Prints out each posts' info
             if let snapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for snap in snapshot {
@@ -46,6 +52,16 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             }
             self.tableView.reloadData()
         })
+    }
+    
+    // Hide keyboard when user touches outside of the keyboard
+    @IBAction func closeFeedKeyboard(_ sender: Any) {
+        self.view.endEditing(true)
+    }
+    // User presses return key to remove keyboard
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        captionField.resignFirstResponder()
+        return true
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -78,7 +94,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             addImgBtn.image = image
-            addImgBtn.backgroundColor = UIColor.white
+            imageSelected = true
         } else {
             print("TEST: A valid image wasn't selected for the imagePicker")
         }
@@ -90,6 +106,53 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     @IBAction func addPostBtnPressed(_ sender: Any) {
+        // If conditions fail, then run code inside
+        guard let caption = captionField.text, caption != "" else {
+            print("TEST: Caption must be entered")
+            return
+        }
+        
+        guard let image = addImgBtn.image, imageSelected == true else {
+            print("TEST: Image must be selected")
+            return
+        }
+        
+        if let imgData = UIImageJPEGRepresentation(image, 0.2) {
+            // Create a unique id for image and tell the storage that it's of type jpeg
+            let imgUid = NSUUID().uuidString
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            // Store the image in Firebase storage
+            DataService.ds.REF_POST_IMAGES.child(imgUid).putData(imgData, metadata: metadata) { (metadata, error) in
+                if error != nil {
+                    print("TEST: Unable to upload image to Firebase storage")
+                } else {
+                    print("TEST: Successfully uploaded image to Firebase storage")
+                    if let downloadUrl = metadata?.downloadURL()?.absoluteString {
+                        self.postToFirebase(imgUrl: downloadUrl)
+                    }
+                }
+            }
+        }
+    }
+    
+    func postToFirebase(imgUrl: String) {
+        let post: Dictionary<String, AnyObject> = [
+            "caption": captionField.text as AnyObject,
+            "imageUrl": imgUrl as AnyObject,
+            "likes": 0 as AnyObject
+        ]
+        
+        let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
+        firebasePost.setValue(post)
+        
+        captionField.text = ""
+        imageSelected = false
+        addImgBtn.image = UIImage(named: "add-image")
+        
+        // Update the feed with the new post
+        tableView.reloadData()
     }
     
     @IBAction func signoutBtnPressed(_ sender: Any) {

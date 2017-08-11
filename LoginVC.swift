@@ -12,13 +12,21 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import SwiftKeychainWrapper
 
-class LoginVC: UIViewController {
+class LoginVC: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var emailField: StyleTextField!
     @IBOutlet weak var pwdField: StyleTextField!
+    @IBOutlet weak var botConstraint: NSLayoutConstraint!
+    
+    var duration: TimeInterval!
+    var animationCurve: UIViewAnimationOptions!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set up for moving text fields up
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -26,11 +34,50 @@ class LoginVC: UIViewController {
         if let _ = KeychainWrapper.standard.string(forKey: KEY_UID) {
             performSegue(withIdentifier: "toFeed", sender: nil)
         }
+        
+        emailField.delegate = self
+        pwdField.delegate = self
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+            
+            // Animation calculations
+            duration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions.curveEaseInOut.rawValue
+            animationCurve = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            
+            self.botConstraint.constant = keyboardFrame.height
+            UIView.animate(withDuration: duration,
+                           delay: TimeInterval(0),
+                           options: animationCurve,
+                           animations: { self.view.layoutIfNeeded() },
+                           completion: nil)
+        }
+    }
+    
+    // Hide keyboard when user touches outside of the keyboard
+    @IBAction func closeLoginKeyboard(_ sender: Any) {
+        self.view.endEditing(true)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // User presses return key to remove keyboard
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        emailField.resignFirstResponder()
+        pwdField.resignFirstResponder()
+        return true
+    }
+    
+    // When keyboard is hidden, make sure bot constraint is 0.0
+    func keyboardWillHide() {
+        self.botConstraint.constant = 0.0
+        UIView.animate(withDuration: duration,
+                       delay: TimeInterval(0),
+                       options: animationCurve,
+                       animations: { self.view.layoutIfNeeded() },
+                       completion: nil)
     }
 
     // Get access token based off of facebook auth
